@@ -15,7 +15,9 @@ import java.util.Date;
 @Repository
 public class LendDao {
 
+    // 注入JdbcTemplate
     private JdbcTemplate jdbcTemplate;
+    // 定义日期格式
     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
@@ -23,31 +25,42 @@ public class LendDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // 定义还书SQL语句1
     private final static String BOOK_RETURN_SQL_ONE="UPDATE lend_list SET back_date = ? WHERE book_id = ? AND back_date is NULL";
 
+    // 定义还书SQL语句2
     private final static String BOOK_RETURN_SQL_TWO="UPDATE book_info SET state = 1 WHERE book_id = ? ";
 
+    // 定义借书SQL语句1
     private final static String BOOK_LEND_SQL_ONE="INSERT INTO lend_list (book_id,reader_id,lend_date) VALUES ( ? , ? , ? )";
 
+    // 定义借书SQL语句2
     private final static String BOOK_LEND_SQL_TWO="UPDATE book_info SET state = 0 WHERE book_id = ? ";
 
+    // 定义借书列表SQL语句
     private final static String LEND_LIST_SQL="SELECT * FROM lend_list";
 
+    // 定义我的借书列表SQL语句
     private final static String MY_LEND_LIST_SQL="SELECT * FROM lend_list WHERE reader_id = ? ";
 
+    // 还书操作1
     public int bookReturnOne(long bookId){
         return  jdbcTemplate.update(BOOK_RETURN_SQL_ONE,new Object[]{df.format(new Date()),bookId});
     }
+    // 还书操作2
     public int bookReturnTwo(long bookId){
         return jdbcTemplate.update(BOOK_RETURN_SQL_TWO,new Object[]{bookId});
     }
+    // 借书操作1
     public int bookLendOne(long bookId,int readerId){
         return  jdbcTemplate.update(BOOK_LEND_SQL_ONE,new Object[]{bookId,readerId,df.format(new Date())});
     }
+    // 借书操作2
     public int bookLendTwo(long bookId){
         return  jdbcTemplate.update(BOOK_LEND_SQL_TWO,new Object[]{bookId});
     }
 
+    // 获取借书列表
     public ArrayList<Lend> lendList(){
         final ArrayList<Lend> list=new ArrayList<Lend>();
 
@@ -68,6 +81,7 @@ public class LendDao {
         return list;
     }
 
+    // 获取我的借书列表
     public ArrayList<Lend> myLendList(int readerId){
         final ArrayList<Lend> list=new ArrayList<Lend>();
 

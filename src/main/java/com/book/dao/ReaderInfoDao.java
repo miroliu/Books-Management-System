@@ -14,15 +14,22 @@ import java.util.Date;
 @Repository
 public class ReaderInfoDao {
 
+    // 注入JdbcTemplate
     private JdbcTemplate jdbcTemplate;
 
+    // 添加读者信息的SQL语句
     private final static String ADD_READER_INFO_SQL="INSERT INTO reader_info VALUES(?,?,?,?,?,?)";
+    // 删除读者信息的SQL语句
     private final static String DELETE_READER_INFO_SQL="DELETE FROM reader_info where reader_id = ? ";
+    // 根据读者ID查询读者信息的SQL语句
     private final static String GET_READER_INFO_SQL="SELECT * FROM reader_info where reader_id = ? ";
+    // 更新读者信息的SQL语句
     private final static String UPDATE_READER_INFO="UPDATE reader_info set name = ? ,sex = ? ,birth = ? ,address = ? ,telcode = ? where reader_id = ? ";
+    // 查询所有读者信息的SQL语句
     private final static String ALL_READER_INFO_SQL="SELECT * FROM reader_info";
 
 
+    // 查询所有读者信息
     public ArrayList<ReaderInfo> getAllReaderInfo() {
         final ArrayList<ReaderInfo> readers=new ArrayList<ReaderInfo>();
         jdbcTemplate.query(ALL_READER_INFO_SQL, new RowCallbackHandler() {
@@ -43,11 +50,13 @@ public class ReaderInfoDao {
         return readers;
     }
 
+    // 注入JdbcTemplate
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // 根据读者ID查询读者信息
     public ReaderInfo findReaderInfoByReaderId(int readerId){
         final ReaderInfo reader=new ReaderInfo();
         jdbcTemplate.query(GET_READER_INFO_SQL, new Object[]{readerId}, new RowCallbackHandler() {
@@ -63,10 +72,12 @@ public class ReaderInfoDao {
         return reader;
     }
 
-    public int deleteReaderInfo(int readerId){
+    // 删除读者信息
+    public int deleteReaderIncdfo(int readerId){
         return jdbcTemplate.update(DELETE_READER_INFO_SQL,readerId);
     }
 
+    // 编辑读者信息
     public int editReaderInfo(ReaderInfo readerInfo){
         String address=readerInfo.getAddress();
         Date birth=readerInfo.getBirth();
@@ -77,6 +88,7 @@ public class ReaderInfoDao {
         return jdbcTemplate.update(UPDATE_READER_INFO,new Object[]{name,sex,birth,address,telcode,readerId});
     }
 
+    // 添加读者信息
     public int addReaderInfo(ReaderInfo readerInfo){
         String address=readerInfo.getAddress();
         Date birth=readerInfo.getBirth();

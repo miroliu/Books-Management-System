@@ -21,6 +21,7 @@ import java.util.Date;
 @Controller
 public class ReaderController {
 
+    // 读者信息服务
     private ReaderInfoService readerInfoService;
     @Autowired
     public void setReaderInfoService(ReaderInfoService readerInfoService) {
@@ -28,17 +29,20 @@ public class ReaderController {
     }   private LoginService loginService;
 
 
+    // 登录服务
     @Autowired
     public void setLoginService(LoginService loginService) {
         this.loginService = loginService;
     }
     private ReaderCardService readerCardService;
 
+    // 读者卡服务
     @Autowired
     public void setReaderCardService(ReaderCardService readerCardService) {
         this.readerCardService = readerCardService;
     }
 
+    // 跳转到所有读者页面
     @RequestMapping("allreaders.html")
     public ModelAndView allBooks(){
         ArrayList<ReaderInfo> readers=readerInfoService.readerInfos();
@@ -47,6 +51,7 @@ public class ReaderController {
         return modelAndView;
     }
 
+    // 删除读者信息
     @RequestMapping("reader_delete.html")
     public String readerDelete(HttpServletRequest request,RedirectAttributes redirectAttributes){
         int readerId= Integer.parseInt(request.getParameter("readerId"));
@@ -61,6 +66,7 @@ public class ReaderController {
         }
 
     }
+    // 跳转到读者信息页面
     @RequestMapping("/reader_info.html")
     public ModelAndView toReaderInfo(HttpServletRequest request) {
         ReaderCard readerCard=(ReaderCard) request.getSession().getAttribute("readercard");
@@ -69,6 +75,7 @@ public class ReaderController {
         modelAndView.addObject("readerinfo",readerInfo);
         return modelAndView;
     }
+    // 跳转到读者信息编辑页面
     @RequestMapping("reader_edit.html")
     public ModelAndView readerInfoEdit(HttpServletRequest request){
         int readerId= Integer.parseInt(request.getParameter("readerId"));
@@ -78,6 +85,7 @@ public class ReaderController {
         return modelAndView;
     }
 
+    // 执行读者信息编辑
     @RequestMapping("reader_edit_do.html")
     public String readerInfoEditDo(HttpServletRequest request,String name,String sex,String birth,String address,String telcode,RedirectAttributes redirectAttributes){
         int readerId= Integer.parseInt(request.getParameter("id"));
@@ -139,6 +147,7 @@ public class ReaderController {
 
     }
 
+    // 跳转到读者信息添加页面
     @RequestMapping("reader_add.html")
     public ModelAndView readerInfoAdd(){
         ModelAndView modelAndView=new ModelAndView("admin_reader_add");

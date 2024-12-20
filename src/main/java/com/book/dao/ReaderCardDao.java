@@ -28,10 +28,12 @@ public class ReaderCardDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    //根据用户ID和密码查询匹配的记录数
     public int getMatchCount(int readerId,String passwd){
         return jdbcTemplate.queryForObject(MATCH_COUNT_SQL,new Object[]{readerId,passwd},Integer.class);
     }
 
+    //根据用户ID查询读者信息
     public ReaderCard findReaderByReaderId(int userId){
         final ReaderCard readerCard=new ReaderCard();
         jdbcTemplate.query(FIND_READER_BY_USERID, new Object[]{userId},
@@ -47,10 +49,12 @@ public class ReaderCardDao {
         return readerCard;
     }
 
+    //重置密码
     public int rePassword(int readerId,String newPasswd){
         return jdbcTemplate.update(RE_PASSWORD_SQL,new Object[]{newPasswd,readerId});
     }
 
+    //添加读者卡
     public int addReaderCard(ReaderInfo readerInfo){
 
         String name=readerInfo.getName();
@@ -59,6 +63,7 @@ public class ReaderCardDao {
         return jdbcTemplate.update(ADD_READERCARD_SQL,new Object[]{readerId,name});
     }
 
+    //更新读者姓名
     public int updateName(int readerId,String name){
         return jdbcTemplate.update(UPDATE_READER_NAME_SQL,new Object[]{name,readerId,});
     }
